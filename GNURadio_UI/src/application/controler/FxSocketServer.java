@@ -12,6 +12,7 @@ public class FxSocketServer extends GenericSocket
 
     private SocketListener fxListener;
     private ServerSocket serverSocket;
+    private Integer port;
 
     @Override
     public void onMessage(final String line) {
@@ -36,7 +37,7 @@ public class FxSocketServer extends GenericSocket
     @Override
     protected void initSocketConnection() throws SocketException {
         try {
-            serverSocket = new ServerSocket(9999);
+            serverSocket = new ServerSocket(port);
             System.out.println("Server started");
             serverSocket.setReuseAddress(true);
             socketConnection = serverSocket.accept();
@@ -60,8 +61,9 @@ public class FxSocketServer extends GenericSocket
         }
     }
     
-    public FxSocketServer(SocketListener fxListener) {
+    public FxSocketServer(SocketListener fxListener, Integer port) {
         this.fxListener = fxListener;
+        this.port = port;
     }
 
 	@Override

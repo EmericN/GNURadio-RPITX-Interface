@@ -112,10 +112,8 @@ public abstract class GenericSocket implements SocketListener {
                 }
             } catch (IOException e) {
             	 e.printStackTrace();  
-            	 System.out.println("End of connection");
             } finally {
                 close();
-                System.out.println("End of connection close");
             }
         }
     }
