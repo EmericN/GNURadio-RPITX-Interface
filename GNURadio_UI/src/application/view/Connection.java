@@ -1,14 +1,9 @@
 package application.view;
 
-import java.net.ServerSocket;
-
-import javax.naming.InitialContext;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 import application.Main;
-import application.model.Client;
-import application.model.Server;
+import application.controler.FxSocketClient;
+import application.controler.FxSocketServer;
+import application.model.SocketListener;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,7 +25,9 @@ public class Connection {
 	@FXML private VBox vBoxMessage;
 	@FXML private Label label1;
 	private Main main;
-	private Thread server, client;
+	private FxSocketServer socketServer;
+	private FxSocketClient socketClient;
+	private boolean isServer = false;
 
 	public Connection() { }
 	
@@ -40,17 +37,7 @@ public class Connection {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				client = new Thread(){
-					public void run(){
-						Client client = new Client();
-						try {
-							client.clientStart(ipAddr.getText(),Integer.parseInt(port.getText()));
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				};
-				client.start();
+				clientConnect();
 			}
 		});
 		 
@@ -58,36 +45,47 @@ public class Connection {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Server");
-				server = new Thread(){
-					public void run(){
-						Server server = new Server();
-						try {
-							server.serverStart();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				};
-				server.start();	
+				serverConnect();
 			}
 		});
 		 
 		 textFieldMessage.setOnAction(event -> {
 			 String message = "";
 			 message += textFieldMessage.getText();
-			 System.out.println("le super message est : "+ message);
-			 //textFieldMessage.clear();
+			 textFieldMessage.clear();
 			 
-			 textAreaDisplayMessage.appendText(message = "\n");
-			 System.out.println("le super message2 est : "+ message);
-			 try {
-				//connection.send(message);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			 if(isServer) {
+				 socketServer.sendMessage(message);
+			 }else {
+				 socketClient.sendMessage(message);
+			 }
+			 
+			 textAreaDisplayMessage.appendText(message + "\n");
+		
 		 });
 	 }
+	 
+	 private void serverConnect() {
+		 socketServer = new FxSocketServer(new FxSocketListener());
+		 socketServer.connect();
+		 isServer = true;
+	    }
+	 
+	 private void clientConnect() {
+		 socketClient = new FxSocketClient(new FxSocketListener(),
+				 ipAddr.getText(),Integer.valueOf(port.getText()));
+		 socketClient.connect();
+	    }
+	 
+	 class FxSocketListener implements SocketListener {
+
+	        public void onMessage(String messageReceive) {
+	            if (messageReceive != null && !messageReceive.equals("")) {
+	                //rcvdMsgsData.add(line);
+	                textAreaDisplayMessage.appendText(messageReceive + "\n");
+	            }
+	        }
+	    }
 
 	 public void setMainApp(Main mainApp) {
 	     this.main = mainApp;
