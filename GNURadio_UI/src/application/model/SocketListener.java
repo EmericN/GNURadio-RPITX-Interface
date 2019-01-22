@@ -33,4 +33,7 @@ package application.model;
 
 public interface SocketListener {
     public void onMessage(String line);
+    public void serverStatusClient(boolean isClientConnected);
+    public void clientStatusClient(boolean isClientConnected);
+    public void connectivityStatus(boolean isConnectivity);
 }

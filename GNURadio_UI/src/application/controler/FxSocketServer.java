@@ -37,9 +37,13 @@ public class FxSocketServer extends GenericSocket
     protected void initSocketConnection() throws SocketException {
         try {
             serverSocket = new ServerSocket(9999);
+            System.out.println("Server started");
             serverSocket.setReuseAddress(true);
             socketConnection = serverSocket.accept();
+            System.out.println("Client accepted");
+            serverStatusClient(true);
         } catch (Exception e) {
+        	serverStatusClient(false);
                 e.printStackTrace();
         }
     }
@@ -49,6 +53,7 @@ public class FxSocketServer extends GenericSocket
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
+                connectivityStatus(false);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,4 +63,29 @@ public class FxSocketServer extends GenericSocket
     public FxSocketServer(SocketListener fxListener) {
         this.fxListener = fxListener;
     }
+
+	@Override
+	public void serverStatusClient(boolean isClientConnected) {
+		javafx.application.Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                fxListener.serverStatusClient(isClientConnected);
+            }
+        });
+	}
+
+	@Override
+	public void clientStatusClient(boolean isClientConnected) {
+		
+	}
+
+	@Override
+	public void connectivityStatus(boolean isConnectivity) {
+		javafx.application.Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                fxListener.connectivityStatus(isConnectivity);
+            }
+        });
+	}
 }

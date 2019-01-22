@@ -39,14 +39,17 @@ public class FxSocketClient extends GenericSocket
             socketConnection = new Socket();
             socketConnection.setReuseAddress(true);
             socketConnection.connect(new InetSocketAddress(host, port));
-
+            clientStatusClient(true);
+            System.out.println("Client connected");
         } catch (IOException e) {
                 e.printStackTrace();
         }
     }
 
     @Override
-    protected void closeAdditionalSockets() {}
+    protected void closeAdditionalSockets() {
+    	connectivityStatus(false);
+    	}
     
     public FxSocketClient(SocketListener fxListener,
             String host, int port) {
@@ -54,4 +57,28 @@ public class FxSocketClient extends GenericSocket
         this.host = host;
         this.fxListener = fxListener;
     }
+
+	@Override
+	public void serverStatusClient(boolean isClientConnected) {
+	}
+
+	@Override
+	public void clientStatusClient(boolean isClientConnected) {
+		javafx.application.Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                fxListener.clientStatusClient(isClientConnected);
+            }
+        });
+	}
+
+	@Override
+	public void connectivityStatus(boolean isConnectivity) {
+		javafx.application.Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                fxListener.connectivityStatus(isConnectivity);
+            }
+        });
+	}
 }

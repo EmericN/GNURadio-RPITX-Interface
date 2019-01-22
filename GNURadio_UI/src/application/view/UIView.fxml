@@ -6,10 +6,12 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.Connection">
+<AnchorPane fx:id="anchorPaneMain" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.Connection">
    <children>
       <Text layoutX="33.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMRadio">
          <font>
@@ -21,13 +23,69 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <TextField fx:id="ipAddr" layoutX="511.0" layoutY="24.0" promptText="IP Address" />
-      <TextField fx:id="port" layoutX="511.0" layoutY="60.0" promptText="Port" />
-      <Button fx:id="connectButton" layoutX="511.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Connect" />
       <Separator layoutX="34.0" layoutY="154.0" prefHeight="3.0" prefWidth="627.0" />
-      <Button fx:id="serverButton" layoutX="430.0" layoutY="59.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="52.0" text="Server" />
-      <Label fx:id="label1" layoutX="171.0" layoutY="196.0" text="Label" />
       <TextField fx:id="textFieldMessage" layoutX="199.0" layoutY="665.0" />
       <TextArea fx:id="textAreaDisplayMessage" layoutX="185.0" layoutY="253.0" prefHeight="274.0" prefWidth="382.0" />
+      <StackPane layoutX="421.0" layoutY="14.0" prefHeight="166.0" prefWidth="265.0">
+         <children>
+            <AnchorPane fx:id="anchorPaneChoice" prefHeight="167.0" prefWidth="236.0">
+               <children>
+                  <Button fx:id="serverButton" layoutX="37.0" layoutY="48.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="96.0" text="Server" />
+                  <Button fx:id="clientButton" layoutX="145.0" layoutY="48.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="96.0" text="Client" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="anchorPaneClient" prefHeight="150.0" prefWidth="200.0" visible="false">
+               <children>
+                  <TextField fx:id="ipAddr" layoutX="58.0" layoutY="42.0" promptText="IP Address" />
+                  <TextField fx:id="port" layoutX="58.0" layoutY="76.0" promptText="Port" />
+                  <Button fx:id="connectServer" layoutX="58.0" layoutY="109.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Connect" />
+                  <Label layoutX="48.0" layoutY="9.0" text="Give IP &amp; port to connect">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="anchorPaneServer" prefHeight="150.0" prefWidth="200.0" visible="false">
+               <children>
+                  <TextField fx:id="portCreateServer" layoutX="58.0" layoutY="64.0" promptText="Port" />
+                  <Button fx:id="createServer" layoutX="58.0" layoutY="97.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Create" />
+                  <Label layoutX="48.0" layoutY="27.0" text="Give port to create server">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="anchorPaneServerStatus" prefHeight="150.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Button fx:id="disconnectServer" layoutX="58.0" layoutY="103.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Disconnect" />
+                  <Label layoutX="59.0" layoutY="32.0" text="Server status :">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Circle fx:id="serverStatus" fill="RED" layoutX="203.0" layoutY="43.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label layoutX="59.0" layoutY="64.0" text="Connected client :">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Circle fx:id="serverStatusClient" fill="RED" layoutX="203.0" layoutY="75.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="anchorPaneClientStatus" prefHeight="150.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Button fx:id="disconnectClient" layoutX="58.0" layoutY="83.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Disconnect" />
+                  <Label layoutX="48.0" layoutY="42.0" text="Connection status :">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Circle fx:id="clientStatus" fill="RED" layoutX="203.0" layoutY="52.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>

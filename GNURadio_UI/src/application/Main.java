@@ -13,44 +13,29 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	
 	 private Stage mainStage;
-	 private BorderPane mainContainer;
+	 private AnchorPane mainContainer;
 
 	@Override
 	public void start(Stage primaryStage) {
 		mainStage = primaryStage;
 		mainStage.setTitle("COMRadio UI");
 		
-	    initialisationConteneurPrincipal();
 	    initialisationContenu();
 	}
-	
-	private void initialisationConteneurPrincipal() {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("view/MainContainer.fxml"));
-        try {
-        	mainContainer = (BorderPane) loader.load();
-            Scene scene = new Scene(mainContainer);
-            mainStage.setScene(scene);
-            mainStage.show();
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-    }
 
     private void initialisationContenu() {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/UIView.fxml"));
         try {
-            AnchorPane appContainer = (AnchorPane) loader.load();
-            mainContainer.setCenter(appContainer);
-            
-            Connection controleur = loader.getController();
-            controleur.setMainApp(this);
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			mainContainer = (AnchorPane) loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        Scene scene = new Scene(mainContainer);
+		mainStage.setScene(scene);
+		mainStage.show();
+		Connection controleur = loader.getController();
+		controleur.setMainApp(this);
     }
 
 	public static void main(String[] args) {
