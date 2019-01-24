@@ -6,6 +6,13 @@ import java.lang.invoke.MethodHandles;
 import java.net.*;
 import java.util.logging.Logger;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.TargetDataLine;
+
 public abstract class GenericSocket implements SocketListener {
     
     public int port;
@@ -27,6 +34,7 @@ public abstract class GenericSocket implements SocketListener {
             setupThread.start();
             socketReaderThread = new SocketReaderThread();
             socketReaderThread.start();
+            
         } catch (Exception e) {
         	 e.printStackTrace();
         }  
@@ -113,6 +121,84 @@ public abstract class GenericSocket implements SocketListener {
 		
 	}
 
+	/*Début voix*/
+	public void voiceIN(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {/*Voix en entrée*/
+		byte[] data = null;
+		try {
+		
+		AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+		DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);/*audio*/
+		SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
+		sourceLine.open(format);
+		sourceLine.start();
+
+		
+	
+		
+		while (true) {
+			
+
+			
+			inputStream = socketConnection.getInputStream();
+			inputStream.read(data);
+			sourceLine.write(data, 0, data.length);
+}
+		
+		
+		
+		
+		}catch(LineUnavailableException | IOException e) {
+			
+			
+			
+			
+		}
+		
+		
+		
+	}
+	
+		public void voiceOUT(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {/*Voix en sortie*/
+			try {
+				
+				AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+				DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class, format);	
+				TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
+				targetLine.open(format);
+				targetLine.start();
+				
+				
+				
+				int numBytesRead;
+				byte[] targetData = new byte[targetLine.getBufferSize() / 5];
+
+				while (true) {
+					numBytesRead = targetLine.read(targetData, 0, targetData.length);
+
+					if (numBytesRead == -1)	break;
+					outputStream.write(targetData);
+					outputStream.flush();
+					
+					//sourceLine.write(targetData, 0, numBytesRead);
+					
+				}
+				
+				
+				
+			
+			}catch (IOException | LineUnavailableException e) {
+				
+				
+		
+				
+				
+				
+			}
+		
+		}
+
+	/*Fin voix*/
+	
     class SetupThread extends Thread {
 
         @Override
@@ -120,8 +206,7 @@ public abstract class GenericSocket implements SocketListener {
             try {
                 initSocketConnection();
                 if (socketConnection != null && !socketConnection.isClosed()) {
-                    input = new BufferedReader(new InputStreamReader(
-                            socketConnection.getInputStream()));
+                    input = new BufferedReader(new InputStreamReader(socketConnection.getInputStream()));
                     output = new BufferedWriter(new OutputStreamWriter(
                             socketConnection.getOutputStream()));
                     output.flush();

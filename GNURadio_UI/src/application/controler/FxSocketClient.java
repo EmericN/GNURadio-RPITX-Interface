@@ -51,8 +51,7 @@ public class FxSocketClient extends GenericSocket
     	connectivityStatus(false);
     	}
     
-    public FxSocketClient(SocketListener fxListener,
-            String host, int port) {
+    public FxSocketClient(SocketListener fxListener,String host, int port) {
         super(port);
         this.host = host;
         this.fxListener = fxListener;
