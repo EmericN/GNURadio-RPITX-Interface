@@ -190,19 +190,23 @@ public abstract class GenericSocket implements SocketListener {
 
 				int numBytesRead;
 				byte[] targetData = new byte[targetLine.getBufferSize() / 5];
-				 
-				ObjectInputStream objetFromServer = new ObjectInputStream(socketConnection.getInputStream());  //create object streams with the server
-				ObjectOutputStream objetToServer = new ObjectOutputStream(socketConnection.getOutputStream());
+				byte[] readData = new byte[10000];
+				//ObjectInputStream objetFromServer = new ObjectInputStream(socketConnection.getInputStream());  //create object streams with the server
+				//ObjectOutputStream objetToServer = new ObjectOutputStream(socketConnection.getOutputStream());
 				
 				while (true) {
 					numBytesRead = targetLine.read(targetData, 0, targetData.length);
 
 					if (numBytesRead == -1)	break;
+					fromServer = new BufferedInputStream(socketConnection.getInputStream());
+			        toServer = new BufferedOutputStream(socketConnection.getOutputStream());
 					
+					toServer.write(targetData);
+					toServer.flush();
 					
+					fromServer.read(readData);
 					
-					
-					sourceLine.write(, 0, numBytesRead);//ecrit dans le hautparleur le son du micro
+					sourceLine.write(readData, 0, numBytesRead);//ecrit dans le hautparleur le son du micro
 					
 				
 					
