@@ -55,6 +55,7 @@ public class FxSocketServer extends GenericSocket
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
                 connectivityStatus(false);
+                System.out.println("Server closed");
             }
         } catch (Exception e) {
             e.printStackTrace();

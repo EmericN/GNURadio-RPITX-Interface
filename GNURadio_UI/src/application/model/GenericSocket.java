@@ -12,6 +12,9 @@ public abstract class GenericSocket implements SocketListener {
     protected Socket socketConnection = null;
     private BufferedWriter output = null;
     private BufferedReader input = null;
+    private InputStream inputStream = null;
+    private OutputStream outputStream = null;
+    private BufferedOutputStream bos = null;
     private boolean ready = false;
     private Thread socketReaderThread;
     private Thread setupThread;
@@ -73,6 +76,42 @@ public abstract class GenericSocket implements SocketListener {
         	 e.printStackTrace();
         }
     }
+    
+    public void receiveFile(String file) {
+    	 try {
+    		 inputStream = socketConnection.getInputStream();
+    		 outputStream = new FileOutputStream(file);
+             bos = new BufferedOutputStream(outputStream);
+             byte[] bytes = new byte[8192];
+             int count;
+             while ((count = inputStream.read(bytes)) >= 0) {
+                 bos.write(bytes, 0, count);
+             }
+             bos.close();
+             inputStream.close();
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+    }
+    
+	public void sendFile(File file) {
+		try {
+			inputStream = socketConnection.getInputStream();
+			outputStream = new FileOutputStream(file);
+			byte[] bytes = new byte[8192];
+
+	        int count;
+	        while ((count = inputStream.read(bytes)) > 0) {
+	        	outputStream.write(bytes, 0, count);
+	        }
+
+	        outputStream.close();
+	        inputStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
+	}
 
     class SetupThread extends Thread {
 

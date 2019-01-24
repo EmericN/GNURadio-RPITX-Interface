@@ -2,7 +2,7 @@ package application;
 
 import java.io.IOException;
 
-import application.view.Connection;
+import application.view.UIApp;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -34,7 +34,7 @@ public class Main extends Application {
         Scene scene = new Scene(mainContainer);
 		mainStage.setScene(scene);
 		mainStage.show();
-		Connection controleur = loader.getController();
+		UIApp controleur = loader.getController();
 		controleur.setMainApp(this);
     }
 

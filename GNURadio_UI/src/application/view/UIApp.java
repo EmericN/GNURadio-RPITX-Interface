@@ -1,5 +1,6 @@
 package application.view;
 
+import java.io.File;
 import java.io.IOException;
 
 import application.Main;
@@ -21,7 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Connection {
+public class UIApp {
 
 	@FXML
 	private TextField ipAddr;
@@ -48,13 +49,13 @@ public class Connection {
 	@FXML
 	private Button sendMessage;
 	@FXML
+	private Button sendFile;
+	@FXML
 	private TextField textFieldMessage;
 	@FXML
 	private TextArea textAreaDisplayMessage;
 	@FXML
 	private VBox vBoxMessage;
-	@FXML
-	private Label label1;
 	@FXML
 	private Circle serverStatus;
 	@FXML
@@ -73,14 +74,13 @@ public class Connection {
 	private AnchorPane anchorPaneServerStatus;
 	@FXML
 	private AnchorPane anchorPaneClientStatus;
+
 	private Main main;
-	Pane newLoadedPane;
 	private FxSocketServer socketServer;
 	private FxSocketClient socketClient;
 	private boolean isServer = false;
-	private boolean connected;
 
-	public Connection() {
+	public UIApp() {
 	}
 
 	@FXML
@@ -164,6 +164,19 @@ public class Connection {
 				}
 			}
 		});
+		
+		sendFile.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (isServer) {
+					socketServer.sendFile(new File("E:\\Téléchargements\\MPLS7_Application_VPN_v03.pdf"));
+					//textAreaDisplayMessage.appendText(nicknameServer.getText() + " : " + message + "\n");
+				} else {
+					socketClient.receiveFile("C:\\testGNU\\MPLS7_Application_VPN_v03.pdf");
+					//textAreaDisplayMessage.appendText(nicknameClient.getText() + " : " + message + "\n");
+				}
+			}
+		});
 	}
 
 	private void serverConnect() {
@@ -181,8 +194,7 @@ public class Connection {
 
 		public void onMessage(String messageReceive) {
 			if (messageReceive != null && !messageReceive.equals("")) {
-				// rcvdMsgsData.add(line);
-				textAreaDisplayMessage.appendText(messageReceive + "\n");
+					textAreaDisplayMessage.appendText(messageReceive + "\n");
 			}
 		}
 
@@ -191,7 +203,6 @@ public class Connection {
 			if (isClientConnected) {
 				serverStatusClient.setFill(Color.GREEN);
 			}
-
 		}
 
 		@Override
