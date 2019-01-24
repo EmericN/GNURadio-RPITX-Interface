@@ -19,8 +19,10 @@ public abstract class GenericSocket implements SocketListener {
     protected Socket socketConnection = null;
     private BufferedWriter output = null;
     private BufferedReader input = null;
-    private InputStream inputStream = null;
-    private OutputStream outputStream = null;
+    private InputStream fromServer = null;
+    private OutputStream toServer = null;
+    private ObjectOutputStream objetToServer =null;
+    private ObjectInputStream objetFromServer =null;
     private BufferedOutputStream bos = null;
     private boolean ready = false;
     private Thread socketReaderThread;
@@ -87,16 +89,16 @@ public abstract class GenericSocket implements SocketListener {
     
     public void receiveFile(String file) {
     	 try {
-    		 inputStream = socketConnection.getInputStream();
-    		 outputStream = new FileOutputStream(file);
-             bos = new BufferedOutputStream(outputStream);
+    		 fromServer = socketConnection.getInputStream();
+    		 toServer = new FileOutputStream(file);
+             bos = new BufferedOutputStream(toServer);
              byte[] bytes = new byte[8192];
              int count;
-             while ((count = inputStream.read(bytes)) >= 0) {
+             while ((count = fromServer.read(bytes)) >= 0) {
                  bos.write(bytes, 0, count);
              }
              bos.close();
-             inputStream.close();
+             fromServer.close();
          } catch (IOException e) {
              e.printStackTrace();
          }
@@ -104,29 +106,29 @@ public abstract class GenericSocket implements SocketListener {
     
 	public void sendFile(File file) {
 		try {
-			inputStream = socketConnection.getInputStream();
-			outputStream = new FileOutputStream(file);
+			fromServer = socketConnection.getInputStream();
+			toServer = new FileOutputStream(file);
 			byte[] bytes = new byte[8192];
 
 	        int count;
-	        while ((count = inputStream.read(bytes)) > 0) {
-	        	outputStream.write(bytes, 0, count);
+	        while ((count = fromServer.read(bytes)) > 0) {
+	        	toServer.write(bytes, 0, count);
 	        }
 
-	        outputStream.close();
-	        inputStream.close();
+	        toServer.close();
+	        fromServer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
 	}
 
-
-	public void voiceIN(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {/*Voix en entrée*/
+/*
+	public void voiceIN(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {//Voix en entrée
 		byte[] data = null;
 		try {
 		
 		AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
-		DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);/*audio*/
+		DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);//audio
 		SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
 		sourceLine.open(format);
 		sourceLine.start();
@@ -143,7 +145,7 @@ public abstract class GenericSocket implements SocketListener {
 		}	
 	}
 	
-		public void voiceOUT(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {/*Voix en sortie*/
+		public void voiceOUT(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {//Voix en sortie
 			try {
 				
 				AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
@@ -169,8 +171,51 @@ public abstract class GenericSocket implements SocketListener {
 				}
 			}catch (IOException | LineUnavailableException e) {		
 			}
-		}
+		}*/
+	
+		public void voiceOverNetwork(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {
+			AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+			
+			DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class, format);
+			DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);
 
+			try {
+				TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
+				targetLine.open(format);
+				targetLine.start();
+				
+				SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
+				sourceLine.open(format);
+				sourceLine.start();
+
+				int numBytesRead;
+				byte[] targetData = new byte[targetLine.getBufferSize() / 5];
+				 
+				ObjectInputStream objetFromServer = new ObjectInputStream(socketConnection.getInputStream());  //create object streams with the server
+				ObjectOutputStream objetToServer = new ObjectOutputStream(socketConnection.getOutputStream());
+				
+				while (true) {
+					numBytesRead = targetLine.read(targetData, 0, targetData.length);
+
+					if (numBytesRead == -1)	break;
+					
+					
+					
+					
+					sourceLine.write(, 0, numBytesRead);//ecrit dans le hautparleur le son du micro
+					
+				
+					
+				}
+			}
+			catch (Exception e) {
+				System.err.println(e);
+			}
+	}
+		
+		
+		
+		
 	/*Fin voix*/
 	
     class SetupThread extends Thread {
