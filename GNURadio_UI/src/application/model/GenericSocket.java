@@ -207,9 +207,7 @@ public abstract class GenericSocket implements SocketListener {
 					fromServer.read(readData);
 					
 					sourceLine.write(readData, 0, numBytesRead);//ecrit dans le hautparleur le son du micro
-					
-				
-					
+
 				}
 			}
 			catch (Exception e) {

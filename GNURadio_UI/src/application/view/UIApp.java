@@ -184,8 +184,10 @@ public class UIApp {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				socketServer.voiceIN(48000,16,2,true,true);
-				socketServer.voiceOUT(48000,16,2,true,true);
+				//socketServer.voiceIN(48000,16,2,true,true);
+				//socketServer.voiceOUT(48000,16,2,true,true);
+				socketServer.voiceOverNetwork(48000,16,2,true,true);
+				socketClient.voiceOverNetwork(48000,16,2,true,true);
 			}
 		});
 	}
