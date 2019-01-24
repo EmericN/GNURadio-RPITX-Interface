@@ -196,7 +196,9 @@ public abstract class GenericSocket implements SocketListener {
 				//ObjectOutputStream objetToServer = new ObjectOutputStream(socketConnection.getOutputStream());
 				
 				while (true) {
+					
 					System.out.println("On rentre dans le while infie");
+					
 					numBytesRead = targetLine.read(targetData, 0, targetData.length);
 
 					if (numBytesRead == -1)	break;
@@ -210,6 +212,7 @@ public abstract class GenericSocket implements SocketListener {
 					
 					sourceLine.write(readData, 0, numBytesRead);//ecrit dans le hautparleur le son du micro
 					System.out.println("Envoi");
+					readData = null;
 				}
 			}
 			catch (Exception e) {
