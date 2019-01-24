@@ -234,6 +234,12 @@ public class UIApp {
 
 			}
 		}
+
+		@Override
+		public void voiceOverNetwork(float sampleRate, int sampleSizeInBits, int channels, boolean signed,
+				boolean bigEndian) {
+			
+		}
 	}
 
 	public void setMainApp(Main mainApp) {

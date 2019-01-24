@@ -23,6 +23,16 @@ public class FxSocketServer extends GenericSocket
             }
         });
     }
+    
+    @Override
+    public void voiceOverNetwork(float sampleRate, int sampleSizeInBits, int channels, boolean signed,
+    		boolean bigEndian) {
+    	javafx.application.Platform.runLater(new Runnable() {
+    		public void run() {
+             fxListener.voiceOverNetwork(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
+         }
+    	});
+    }
 
     /*@Override
     public void onClosedStatus(final boolean isClosed) {
