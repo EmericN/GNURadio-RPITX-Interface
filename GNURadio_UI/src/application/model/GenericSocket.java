@@ -174,6 +174,7 @@ public abstract class GenericSocket implements SocketListener {
 		}*/
 	
 		public void voiceOverNetwork(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {
+			System.out.println("Lancement de la fonction");
 			AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
 			
 			DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class, format);
@@ -195,6 +196,7 @@ public abstract class GenericSocket implements SocketListener {
 				//ObjectOutputStream objetToServer = new ObjectOutputStream(socketConnection.getOutputStream());
 				
 				while (true) {
+					System.out.println("On rentre dans le while infie");
 					numBytesRead = targetLine.read(targetData, 0, targetData.length);
 
 					if (numBytesRead == -1)	break;
@@ -207,7 +209,7 @@ public abstract class GenericSocket implements SocketListener {
 					fromServer.read(readData);
 					
 					sourceLine.write(readData, 0, numBytesRead);//ecrit dans le hautparleur le son du micro
-
+					System.out.println("Envoi");
 				}
 			}
 			catch (Exception e) {
@@ -228,8 +230,7 @@ public abstract class GenericSocket implements SocketListener {
                 initSocketConnection();
                 if (socketConnection != null && !socketConnection.isClosed()) {
                     input = new BufferedReader(new InputStreamReader(socketConnection.getInputStream()));
-                    output = new BufferedWriter(new OutputStreamWriter(
-                            socketConnection.getOutputStream()));
+                    output = new BufferedWriter(new OutputStreamWriter(socketConnection.getOutputStream()));
                     output.flush();
                 }
                 notifyReady();
