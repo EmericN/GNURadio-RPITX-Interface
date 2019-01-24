@@ -191,12 +191,12 @@ public abstract class GenericSocket implements SocketListener {
 
 				int numBytesRead;
 				byte[] targetData = new byte[targetLine.getBufferSize() / 5];
-				byte[] readData = new byte[1000000000];
+				
 				//ObjectInputStream objetFromServer = new ObjectInputStream(socketConnection.getInputStream());  //create object streams with the server
 				//ObjectOutputStream objetToServer = new ObjectOutputStream(socketConnection.getOutputStream());
 				
 				while (true) {
-					
+					byte[] readData = new byte[1000000000];
 					System.out.println("On rentre dans le while infie");
 					
 					numBytesRead = targetLine.read(targetData, 0, targetData.length);
