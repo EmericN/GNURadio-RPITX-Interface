@@ -81,6 +81,6 @@
       </StackPane>
       <Button fx:id="sendMessage" layoutX="603.0" layoutY="687.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="58.0" text="Send" />
       <Button fx:id="sendFile" layoutX="152.0" layoutY="189.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="92.0" text="File Transfer" />
-      <Button layoutX="33.0" layoutY="189.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="92.0" text="Voice Call" />
+      <Button fx:id="voiceCall" layoutX="33.0" layoutY="189.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="92.0" text="Voice Call" />
    </children>
 </AnchorPane>

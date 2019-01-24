@@ -118,10 +118,9 @@ public abstract class GenericSocket implements SocketListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-		
 	}
 
-	/*Début voix*/
+
 	public void voiceIN(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {/*Voix en entrée*/
 		byte[] data = null;
 		try {
@@ -133,29 +132,15 @@ public abstract class GenericSocket implements SocketListener {
 		sourceLine.start();
 
 		
-	
-		
 		while (true) {
-			
-
-			
+				
 			inputStream = socketConnection.getInputStream();
 			inputStream.read(data);
 			sourceLine.write(data, 0, data.length);
-}
-		
-		
-		
-		
-		}catch(LineUnavailableException | IOException e) {
-			
-			
-			
-			
 		}
-		
-		
-		
+
+		}catch(LineUnavailableException | IOException e) {
+		}	
 	}
 	
 		public void voiceOUT(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {/*Voix en sortie*/
@@ -182,19 +167,8 @@ public abstract class GenericSocket implements SocketListener {
 					//sourceLine.write(targetData, 0, numBytesRead);
 					
 				}
-				
-				
-				
-			
-			}catch (IOException | LineUnavailableException e) {
-				
-				
-		
-				
-				
-				
+			}catch (IOException | LineUnavailableException e) {		
 			}
-		
 		}
 
 	/*Fin voix*/

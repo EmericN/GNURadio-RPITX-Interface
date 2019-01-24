@@ -51,6 +51,8 @@ public class UIApp {
 	@FXML
 	private Button sendFile;
 	@FXML
+	private Button voiceCall;
+	@FXML
 	private TextField textFieldMessage;
 	@FXML
 	private TextArea textAreaDisplayMessage;
@@ -175,6 +177,15 @@ public class UIApp {
 					socketClient.receiveFile("C:\\testGNU\\MPLS7_Application_VPN_v03.pdf");
 					//textAreaDisplayMessage.appendText(nicknameClient.getText() + " : " + message + "\n");
 				}
+			}
+		});
+		
+		voiceCall.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				socketServer.voiceIN(48000,16,2,true,true);
+				socketServer.voiceOUT(48000,16,2,true,true);
 			}
 		});
 	}
