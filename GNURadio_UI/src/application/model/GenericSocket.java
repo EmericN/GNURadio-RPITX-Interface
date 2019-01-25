@@ -194,16 +194,14 @@ public abstract class GenericSocket implements SocketListener {
 				
 				//ObjectInputStream objetFromServer = new ObjectInputStream(socketConnection.getInputStream());  //create object streams with the server
 				//ObjectOutputStream objetToServer = new ObjectOutputStream(socketConnection.getOutputStream());
-				fromServer = new BufferedInputStream(socketConnection.getInputStream());
-		        toServer = new BufferedOutputStream(socketConnection.getOutputStream());
+				fromServer = new DataInputStream(socketConnection.getInputStream());
+		        toServer = new DataOutputStream(socketConnection.getOutputStream());
 				while (true) {
-					byte[] readData = new byte[10000];
-					System.out.println("On rentre dans le while infie");
+				byte[] readData = new byte[100000];
+				//System.out.println("On rentre dans le while infie");
 					
 					numBytesRead = targetLine.read(targetData, 0, targetData.length);
-
 					if (numBytesRead == -1)	break;
-					
 					
 					toServer.write(targetData);
 					toServer.flush();
@@ -211,7 +209,7 @@ public abstract class GenericSocket implements SocketListener {
 					fromServer.read(readData);
 					
 					sourceLine.write(readData, 0, numBytesRead);//ecrit dans le hautparleur le son du micro
-					System.out.println("Envoi");
+					//System.out.println("Envoi");
 					readData = null;
 				}
 			}
