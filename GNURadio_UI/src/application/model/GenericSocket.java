@@ -250,7 +250,7 @@ public abstract class GenericSocket implements SocketListener {
         	
         	waitForReady();
         	
-            try {
+           /* try {
                 if (input != null) {
                     String line;
                     while ((line = input.readLine()) != null) { 
@@ -261,7 +261,7 @@ public abstract class GenericSocket implements SocketListener {
             	 e.printStackTrace();  
             } finally {
                 close();
-            }
+            } */
         }
     }
     
