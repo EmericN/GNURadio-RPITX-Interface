@@ -37,8 +37,8 @@ public abstract class GenericSocket implements SocketListener {
             setupThread.start();
             socketReaderThread = new SocketReaderThread();
             socketReaderThread.start();
-            FileReaderThread = new FileReaderThread();
-            FileReaderThread.start();
+          //  FileReaderThread = new FileReaderThread();
+            //FileReaderThread.start();
             
         } catch (Exception e) {
         	 e.printStackTrace();
@@ -210,7 +210,7 @@ public abstract class GenericSocket implements SocketListener {
         	
         	waitForReady();
         	
-           /* try {
+            try {
                 if (input != null) {
                     String line;
                     while ((line = input.readLine()) != null) { 
@@ -221,7 +221,7 @@ public abstract class GenericSocket implements SocketListener {
             	 e.printStackTrace();  
             } finally {
                 close();
-            } */
+            } 
         }
     }
     
@@ -234,7 +234,7 @@ public abstract class GenericSocket implements SocketListener {
     
     
     public GenericSocket() {
-        this(Constants.instance().DEFAULT_PORT);
+        //this(Constants.instance().DEFAULT_PORT);
     }
 
     public GenericSocket(int port) {

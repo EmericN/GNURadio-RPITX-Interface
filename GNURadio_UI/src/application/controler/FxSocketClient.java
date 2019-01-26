@@ -7,8 +7,7 @@ import java.net.*;
 import application.model.GenericSocket;
 import application.model.SocketListener;
 
-public class FxSocketClient extends GenericSocket
-        implements SocketListener {
+public class FxSocketClient extends GenericSocket implements SocketListener {
 
     public String host;
     private SocketListener fxListener;
