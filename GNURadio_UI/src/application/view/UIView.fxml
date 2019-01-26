@@ -13,12 +13,12 @@
 
 <AnchorPane fx:id="anchorPaneMain" prefHeight="750.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.UIApp">
    <children>
-      <Text layoutX="33.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMRadio">
+      <Text layoutX="33.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMRadi">
          <font>
             <Font size="44.0" />
          </font>
       </Text>
-      <Text layoutX="33.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Communicate anything with radio band">
+      <Text layoutX="33.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Communicate anything with radio ban">
          <font>
             <Font size="20.0" />
          </font>
