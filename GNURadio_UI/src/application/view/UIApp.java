@@ -40,7 +40,7 @@ public class UIApp {
 	@FXML
 	private Button createServer;
 	@FXML
-	private Button clientButton;
+	private Button clientButton;//test
 	@FXML
 	private Button serverButton;
 	@FXML
