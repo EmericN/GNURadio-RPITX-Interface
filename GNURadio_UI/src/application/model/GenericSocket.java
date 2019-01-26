@@ -27,6 +27,7 @@ public abstract class GenericSocket implements SocketListener {
     private boolean ready = false;
     private Thread socketReaderThread;
     private Thread setupThread;
+    private Thread FileReaderThread;
     public final int DEFAULT_PORT = 2015;
     
     public void connect() {
@@ -36,6 +37,8 @@ public abstract class GenericSocket implements SocketListener {
             setupThread.start();
             socketReaderThread = new SocketReaderThread();
             socketReaderThread.start();
+            FileReaderThread = new FileReaderThread();
+            FileReaderThread.start();
             
         } catch (Exception e) {
         	 e.printStackTrace();
@@ -87,18 +90,23 @@ public abstract class GenericSocket implements SocketListener {
         }
     }
     
-    public void receiveFile(String file) {
+    public void receiveFile() {
     	 try {
-    		 fromServer = socketConnection.getInputStream();
-    		 toServer = new FileOutputStream(file);
-             bos = new BufferedOutputStream(toServer);
-             byte[] bytes = new byte[8192];
-             int count;
-             while ((count = fromServer.read(bytes)) >= 0) {
-                 bos.write(bytes, 0, count);
-             }
-             bos.close();
-             fromServer.close();
+    		System.out.println("Receiver FILE !");
+    		DataInputStream dis = new DataInputStream(socketConnection.getInputStream());
+    		FileOutputStream fos = new FileOutputStream("C:\\testGNU\\VirtualBox-5.2.20-125813-Win.exe");
+    		byte[] buffer = new byte[4096];
+
+    		
+    		int count;
+    		while ((count = dis.read(buffer)) > 0)
+    		{
+    			fos.write(buffer, 0, count);
+    		}
+    			
+    		fos.close();
+    		dis.close();
+ 
          } catch (IOException e) {
              e.printStackTrace();
          }
@@ -106,17 +114,18 @@ public abstract class GenericSocket implements SocketListener {
     
 	public void sendFile(File file) {
 		try {
-			fromServer = socketConnection.getInputStream();
-			toServer = new FileOutputStream(file);
-			byte[] bytes = new byte[8192];
+			System.out.println("Sender FILE !");
+			DataOutputStream dos = new DataOutputStream(socketConnection.getOutputStream());
+			FileInputStream fis = new FileInputStream(file);
+			byte[] buffer = new byte[4096];
 
-	        int count;
-	        while ((count = fromServer.read(bytes)) > 0) {
-	        	toServer.write(bytes, 0, count);
-	        }
+			int read;
+			while ((read=fis.read(buffer)) > 0) {
+				dos.write(buffer,0,read);
+			}
 
-	        toServer.close();
-	        fromServer.close();
+			fis.close();
+			dos.close(); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -266,6 +275,14 @@ public abstract class GenericSocket implements SocketListener {
             } */
         }
     }
+    
+    class FileReaderThread extends Thread {
+    	public void run() {
+    		waitForReady();
+    		receiveFile();
+    	}
+    }
+    
     
     public GenericSocket() {
         this(Constants.instance().DEFAULT_PORT);

@@ -88,6 +88,7 @@ public class UIApp {
 	@FXML
 	private void initialize() {
 
+		//Handler event menu server
 		serverButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -96,6 +97,7 @@ public class UIApp {
 			}
 		});
 
+		//Handler event menu client
 		clientButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -104,6 +106,7 @@ public class UIApp {
 			}
 		});
 
+		//Handler event connection server
 		connectServer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -115,6 +118,7 @@ public class UIApp {
 			}
 		});
 
+		//Handler event creation server
 		createServer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -128,6 +132,7 @@ public class UIApp {
 			}
 		});
 
+		//Handler event deconnexion server
 		disconnectServer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -139,6 +144,7 @@ public class UIApp {
 			}
 		});
 
+		//Handler event deconnexion client
 		disconnectClient.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -150,6 +156,7 @@ public class UIApp {
 			}
 		});
 
+		//Handler event envoyer message
 		sendMessage.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -166,54 +173,58 @@ public class UIApp {
 				}
 			}
 		});
-		
+
+		//Handler event envoyer fichier
 		sendFile.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				if (isServer) {
-					socketServer.sendFile(new File("E:\\Téléchargements\\MPLS7_Application_VPN_v03.pdf"));
-					//textAreaDisplayMessage.appendText(nicknameServer.getText() + " : " + message + "\n");
+					socketServer.sendFile(new File("E:\\Téléchargements\\VirtualBox-5.2.20-125813-Win.exe"));
 				} else {
-					socketClient.receiveFile("C:\\testGNU\\MPLS7_Application_VPN_v03.pdf");
-					//textAreaDisplayMessage.appendText(nicknameClient.getText() + " : " + message + "\n");
+					socketClient.receiveFile();
 				}
 			}
 		});
-		
+
+		//Handler event conv call
 		voiceCall.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
-				//socketServer.voiceIN(48000,16,2,true,true);
-				//socketServer.voiceOUT(48000,16,2,true,true);
 				if (isServer) {
-					socketServer.voiceOverNetwork(48000,16,2,true,true);
-				}else {
-					socketClient.voiceOverNetwork(48000,16,2,true,true);
+					socketServer.voiceOverNetwork(48000, 16, 2, true, true);
+				} else {
+					socketClient.voiceOverNetwork(48000, 16, 2, true, true);
 				}
 			}
 		});
 	}
 
+	// methode qui crée le serveur avec le port indiqué par l'utilisateur
 	private void serverConnect() {
 		socketServer = new FxSocketServer(new FxSocketListener(), Integer.valueOf(portCreateServer.getText()));
 		socketServer.connect();
 		isServer = true;
 	}
 
+	// methode qui connecte le client au server
 	private void clientConnect() {
 		socketClient = new FxSocketClient(new FxSocketListener(), ipAddr.getText(), Integer.valueOf(port.getText()));
 		socketClient.connect();
 	}
 
+	// classe FxSocketListener qui implémente les méthodes de la classe SocketListener
 	class FxSocketListener implements SocketListener {
 
+		// Méthode onMessage() récupère tous les nouveaux message et les affiches dans le conteneur de chat 
 		public void onMessage(String messageReceive) {
 			if (messageReceive != null && !messageReceive.equals("")) {
-					textAreaDisplayMessage.appendText(messageReceive + "\n");
+				textAreaDisplayMessage.appendText(messageReceive + "\n");
 			}
 		}
 
+		// Méthode serverStatusClient() qui indique si oui ou non le serveur à accepter la connexion d'un client
+		// Si oui alors on change la couleur du rond correspondant
 		@Override
 		public void serverStatusClient(boolean isClientConnected) {
 			if (isClientConnected) {
@@ -221,13 +232,16 @@ public class UIApp {
 			}
 		}
 
+		// Méthode clientStatusConnect() qui indique si oui ou non le client à réussi à se sonnecter
+		// Si oui alors on change la couleur du rond correspondant
 		@Override
-		public void clientStatusClient(boolean isClientConnected) {
+		public void clientStatusConnect(boolean isClientConnected) {
 			if (isClientConnected) {
 				clientStatus.setFill(Color.GREEN);
 			}
 		}
-
+		
+		// Méthode connectivityStatus() qui indique si il y perte de connectivité
 		@Override
 		public void connectivityStatus(boolean isConnectivity) {
 			if (!isConnectivity) {

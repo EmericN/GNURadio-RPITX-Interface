@@ -79,7 +79,7 @@ public class FxSocketServer extends GenericSocket
 	}
 
 	@Override
-	public void clientStatusClient(boolean isClientConnected) {
+	public void clientStatusConnect(boolean isClientConnected) {
 		
 	}
 
