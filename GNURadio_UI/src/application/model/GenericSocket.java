@@ -131,56 +131,7 @@ public abstract class GenericSocket implements SocketListener {
 		} 
 	}
 
-/*
-	public void voiceIN(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {//Voix en entrée
-		byte[] data = null;
-		try {
-		
-		AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
-		DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);//audio
-		SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
-		sourceLine.open(format);
-		sourceLine.start();
 
-		
-		while (true) {
-				
-			inputStream = socketConnection.getInputStream();
-			inputStream.read(data);
-			sourceLine.write(data, 0, data.length);
-		}
-
-		}catch(LineUnavailableException | IOException e) {
-		}	
-	}
-	
-		public void voiceOUT(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {//Voix en sortie
-			try {
-				
-				AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
-				DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class, format);	
-				TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
-				targetLine.open(format);
-				targetLine.start();
-				
-				
-				
-				int numBytesRead;
-				byte[] targetData = new byte[targetLine.getBufferSize() / 5];
-
-				while (true) {
-					numBytesRead = targetLine.read(targetData, 0, targetData.length);
-
-					if (numBytesRead == -1)	break;
-					outputStream.write(targetData);
-					outputStream.flush();
-					
-					//sourceLine.write(targetData, 0, numBytesRead);
-					
-				}
-			}catch (IOException | LineUnavailableException e) {		
-			}
-		}*/
 	
 		public void voiceOverNetwork(float sampleRate, int sampleSizeInBits,int channels,boolean signed, boolean bigEndian) {
 			System.out.println("Lancement de la fonction");
@@ -201,8 +152,6 @@ public abstract class GenericSocket implements SocketListener {
 				int numBytesRead;
 				byte[] targetData = new byte[targetLine.getBufferSize() / 5];
 				
-				//ObjectInputStream objetFromServer = new ObjectInputStream(socketConnection.getInputStream());  //create object streams with the server
-				//ObjectOutputStream objetToServer = new ObjectOutputStream(socketConnection.getOutputStream());
 				fromServer = new DataInputStream(socketConnection.getInputStream());
 		        toServer = new DataOutputStream(socketConnection.getOutputStream());
 		        
