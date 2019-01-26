@@ -207,7 +207,7 @@ public abstract class GenericSocket implements SocketListener {
 		        toServer = new DataOutputStream(socketConnection.getOutputStream());
 		        
 				while (true) {
-			    byte[] readData = new byte[100000];
+			    byte[] readData = new byte[sourceLine.getBufferSize()];
 			    
 				//System.out.println("On rentre dans le while infie");
 					
