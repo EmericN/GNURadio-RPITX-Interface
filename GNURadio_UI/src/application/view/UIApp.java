@@ -194,19 +194,15 @@ public class UIApp {
 		voiceCall.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if (isServer) {
-					socketServer.voiceOverNetwork(48000, 16, 2, true, true);
-				} else {
-					socketClient.voiceOverNetwork(48000, 16, 2, true, true);
-				}
+				voiceThread = new VoiceThread();
+				voiceThread.start();
 			}
 		});
 		
 		voiceCallStop.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
-				voiceThread = new VoiceThread();
-				voiceThread.start();
+				voiceThread.interrupt();
 			}
 		});
 	}
