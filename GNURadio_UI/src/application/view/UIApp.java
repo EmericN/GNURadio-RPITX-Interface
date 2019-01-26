@@ -6,6 +6,7 @@ import java.io.IOException;
 import application.Main;
 import application.controler.FxSocketClient;
 import application.controler.FxSocketServer;
+import application.model.GenericSocket;
 import application.model.SocketListener;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -53,6 +54,8 @@ public class UIApp {
 	@FXML
 	private Button voiceCall;
 	@FXML
+	private Button voiceCallStop;
+	@FXML
 	private TextField textFieldMessage;
 	@FXML
 	private TextArea textAreaDisplayMessage;
@@ -81,6 +84,7 @@ public class UIApp {
 	private FxSocketServer socketServer;
 	private FxSocketClient socketClient;
 	private boolean isServer = false;
+	private Thread voiceThread;
 
 	public UIApp() {
 	}
@@ -188,7 +192,6 @@ public class UIApp {
 
 		//Handler event conv call
 		voiceCall.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				if (isServer) {
@@ -196,6 +199,14 @@ public class UIApp {
 				} else {
 					socketClient.voiceOverNetwork(48000, 16, 2, true, true);
 				}
+			}
+		});
+		
+		voiceCallStop.setOnAction(new EventHandler<ActionEvent>() {			
+			@Override
+			public void handle(ActionEvent event) {
+				voiceThread = new VoiceThread();
+				voiceThread.start();
 			}
 		});
 	}
@@ -251,7 +262,18 @@ public class UIApp {
 
 			}
 		}
+	
 	}
+	
+	  class VoiceThread extends Thread {
+	    	public void run() {
+	    		if (isServer) {
+	    		socketServer.voiceOverNetwork(48000, 16, 2, true, true);
+	    		}else {
+	    			socketClient.voiceOverNetwork(48000, 16, 2, true, true);
+	    		}
+	    	}
+	    }
 
 	public void setMainApp(Main mainApp) {
 		this.main = mainApp;
