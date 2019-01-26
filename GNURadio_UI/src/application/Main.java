@@ -17,6 +17,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		
 		mainStage = primaryStage;
 		mainStage.setTitle("COMRadio UI");
 		
@@ -24,6 +25,7 @@ public class Main extends Application {
 	}
 
     private void initialisationContenu() {
+    	
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/UIView.fxml"));
         try {
@@ -31,6 +33,7 @@ public class Main extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        
         Scene scene = new Scene(mainContainer);
 		mainStage.setScene(scene);
 		mainStage.show();

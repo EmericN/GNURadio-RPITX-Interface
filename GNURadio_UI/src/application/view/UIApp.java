@@ -87,6 +87,7 @@ public class UIApp {
 	private Thread voiceThread;
 
 	public UIApp() {
+		
 	}
 
 	@FXML
@@ -96,8 +97,10 @@ public class UIApp {
 		serverButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
 				anchorPaneChoice.setVisible(false);
 				anchorPaneServer.setVisible(true);
+				
 			}
 		});
 
@@ -105,8 +108,10 @@ public class UIApp {
 		clientButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
 				anchorPaneChoice.setVisible(false);
 				anchorPaneClient.setVisible(true);
+				
 			}
 		});
 
@@ -114,10 +119,13 @@ public class UIApp {
 		connectServer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
 				if (anchorPaneClient.isVisible()) {
+					
 					clientConnect();
 					anchorPaneClient.setVisible(false);
 					anchorPaneClientStatus.setVisible(true);
+					
 				}
 			}
 		});
@@ -126,12 +134,15 @@ public class UIApp {
 		createServer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
 				if (anchorPaneServer.isVisible()) {
+					
 					serverConnect();
 					anchorPaneServer.setVisible(false);
 					anchorPaneServerStatus.setVisible(true);
 					serverStatus.setFill(Color.GREEN);
 					serverStatusClient.setFill(Color.RED);
+					
 				}
 			}
 		});
@@ -140,10 +151,13 @@ public class UIApp {
 		disconnectServer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
 				if (isServer) {
+					
 					socketServer.shutdown();
 					anchorPaneChoice.setVisible(true);
 					anchorPaneServerStatus.setVisible(false);
+					
 				}
 			}
 		});
@@ -153,27 +167,35 @@ public class UIApp {
 			@Override
 			public void handle(ActionEvent event) {
 				if (!isServer) {
+					
 					socketClient.shutdown();
 					anchorPaneChoice.setVisible(true);
 					anchorPaneClientStatus.setVisible(false);
+					
 				}
 			}
 		});
 
 		//Handler event envoyer message
 		sendMessage.setOnAction(new EventHandler<ActionEvent>() {
+			
 			@Override
 			public void handle(ActionEvent event) {
+				
 				String message = "";
 				message += textFieldMessage.getText();
 				textFieldMessage.clear();
 
 				if (isServer) {
+					
 					socketServer.sendMessage(nicknameServer.getText() + " : " + message);
 					textAreaDisplayMessage.appendText(nicknameServer.getText() + " : " + message + "\n");
+					
 				} else {
+					
 					socketClient.sendMessage(nicknameClient.getText() + " : " + message);
 					textAreaDisplayMessage.appendText(nicknameClient.getText() + " : " + message + "\n");
+					
 				}
 			}
 		});
@@ -192,6 +214,7 @@ public class UIApp {
 
 		//Handler event conv call
 		voiceCall.setOnAction(new EventHandler<ActionEvent>() {
+			
 			@Override
 			public void handle(ActionEvent event) {
 				voiceThread = new VoiceThread();
@@ -209,13 +232,16 @@ public class UIApp {
 
 	// methode qui crée le serveur avec le port indiqué par l'utilisateur
 	private void serverConnect() {
+		
 		socketServer = new FxSocketServer(new FxSocketListener(), Integer.valueOf(portCreateServer.getText()));
 		socketServer.connect();
 		isServer = true;
+		
 	}
 
 	// methode qui connecte le client au server
 	private void clientConnect() {
+		
 		socketClient = new FxSocketClient(new FxSocketListener(), ipAddr.getText(), Integer.valueOf(port.getText()));
 		socketClient.connect();
 	}
@@ -225,27 +251,33 @@ public class UIApp {
 
 		// Méthode onMessage() récupère tous les nouveaux message et les affiches dans le conteneur de chat 
 		public void onMessage(String messageReceive) {
+			
 			if (messageReceive != null && !messageReceive.equals("")) {
 				textAreaDisplayMessage.appendText(messageReceive + "\n");
 			}
+			
 		}
 
 		// Méthode serverStatusClient() qui indique si oui ou non le serveur à accepter la connexion d'un client
 		// Si oui alors on change la couleur du rond correspondant
 		@Override
 		public void serverStatusClient(boolean isClientConnected) {
+			
 			if (isClientConnected) {
 				serverStatusClient.setFill(Color.GREEN);
 			}
+			
 		}
 
 		// Méthode clientStatusConnect() qui indique si oui ou non le client à réussi à se sonnecter
 		// Si oui alors on change la couleur du rond correspondant
 		@Override
 		public void clientStatusConnect(boolean isClientConnected) {
+			
 			if (isClientConnected) {
 				clientStatus.setFill(Color.GREEN);
 			}
+			
 		}
 		
 		// Méthode connectivityStatus() qui indique si il y perte de connectivité
