@@ -38,8 +38,9 @@ public abstract class GenericSocket implements SocketListener {
             setupThread.start();
             socketReaderThread = new SocketReaderThread();
             socketReaderThread.start();
-            //FileReaderThread = new FileReaderThread();
-            //FileReaderThread.start();
+
+          //  FileReaderThread = new FileReaderThread();
+
             
         } catch (Exception e) {
         	 e.printStackTrace();
@@ -235,6 +236,9 @@ public abstract class GenericSocket implements SocketListener {
     }
     
     public GenericSocket() {
+
+        //this(Constants.instance().DEFAULT_PORT);
+
     }
 
     public GenericSocket(int port) {
